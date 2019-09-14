@@ -10,6 +10,44 @@ servers:
 
 # Paths servidos por la aplicación
 paths:
+#  /api/domains/{domain}:
+#    operationId: "api.domains.obtain_ip"
+#    tags:
+#      - "Domains"
+#    summary: "IPs dominions"
+#    description: "Obtiene la IP asociada a un dominio en particular, pudiendo ser este un custom domain creado previamente."
+#    responses:
+#     200:
+#        description: "Se obtuvo la IP exitosamente"
+#        content: 
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/Domain'
+  /domains/{domain_name}:
+    get:
+      operationId: "api.domains.obtain_ip"
+      tags:
+        - "Domains"
+      summary: "IPs dominios"
+      description: "Obtiene la IP asociada a un dominio en particular, pudiendo ser este un custom domain creado previamente."
+      parameters:
+        - in: path
+          name: domain_name
+          required: true
+          schema:
+            type: string
+          description: El domain name del cual queremos obtener su ip
+      responses:
+        200:
+          description: "Operación de lectura exitosa"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Domain'
+
+
   /alumnos:
     get:
       operationId: "api.alumnos.obtener_todos"
@@ -26,6 +64,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Alumno'
+
     post:
       operationId: "api.alumnos.crear"
       tags:
@@ -119,3 +158,12 @@ components:
           type: "number"
         mensaje:
           type: "string"
+    Domain:
+      type: "object"
+      properties:
+        domain:
+          type: "string"
+        ip:
+          type: "string"
+        custom:
+          type: "boolean"
