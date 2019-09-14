@@ -39,14 +39,64 @@ paths:
           description: El domain name del cual queremos obtener su ip
       responses:
         200:
-          description: "Operación de lectura exitosa"
+          description: "Dominio encontrado exitosamente"
           content:
             application/json:
               schema:
-                type: array
                 items:
                   $ref: '#/components/schemas/Domain'
+        404:
+          description: "No existe el dominio en el sistema ni se pudo resolver mediante DNS"
 
+  /custom-domains:
+    post:
+      operationId: "api.domains.add_custom_domain"
+      tags:
+        - 'Custom domains'
+      summary: "Agrega un nuevo dominio custom"
+      description: "Carga un nuevo dominio custom en el sistema con su correspondiente IP"
+      requestBody:
+        required: true
+        x-body-name: 'custom-domain'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputCustomDomain'
+      responses:
+        201:
+          description: "Operacion de carga exitosa"
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Domain'
+        400: 
+          description: "Ya se ha cargado el dominio en el sistema"
+    put:
+      operationId: "api.domains.edit_domain"
+      tags: 
+        - 'Edit domain'
+      summary: 'Modifica ips'
+      description: 'Modifica la ip de un dominio dado'
+      requestBody:
+        required: true
+        x-body-name: 'edit-domain'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InputCustomDomain'
+      responses:
+        200:
+          description: "Modificacion exitosa"
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Domain'
+        404:
+          description: "No existe el dominio en el sistema, no se puede modificar"
+        400:
+          description: "No se indicaron los "
 
   /alumnos:
     get:
@@ -167,3 +217,10 @@ components:
           type: "string"
         custom:
           type: "boolean"
+    InputCustomDomain:
+      type: "object"
+      properties:
+        domain:
+          type: "string"
+        ip:
+          type: "string"
