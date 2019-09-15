@@ -96,7 +96,31 @@ paths:
         404:
           description: "No existe el dominio en el sistema, no se puede modificar"
         400:
-          description: "No se indicaron los "
+          description: "El request body esta mal formadoWWWWW"
+  /custom-domains/{domain_name}:
+    delete:
+      operationId: "api.domains.delete_domain"
+      tags:
+        - "Delete domain"
+      summary: "Deletes domain info"
+      description: "Deletes domain info from the system"
+      parameters:
+        - in: path
+          name: domain_name
+          required: true
+          schema:
+            type: string
+          description: El nombre del dominio a borrar
+      responses:
+        200:
+          description: "Eliminacion exitosa"
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DeleteDomain'
+        404:
+          description: "No se encuentra el dominio"
 
   /alumnos:
     get:
@@ -223,4 +247,9 @@ components:
         domain:
           type: "string"
         ip:
+          type: "string"
+    DeleteDomain:
+      type: "object"
+      properties:
+        domain:
           type: "string"

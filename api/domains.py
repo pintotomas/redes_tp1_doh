@@ -72,6 +72,14 @@ def edit_domain(**kwargs):
     response =   {"domain": domain, "ip": ip, "custom": True}
     return make_response(json.dumps(response), 200)
 
+def delete_domain(domain_name):
+    if domain_name not in domains:
+        response = {"error": "domain not found"}
+        return make_response(json.dumps(response), 404)
+    del domains[domain_name]
+    response = {"domain": domain_name}
+    return make_response(json.dumps(response), 200)
+
 from itertools import cycle
 
 class DomainInfo:
