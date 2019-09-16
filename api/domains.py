@@ -5,12 +5,24 @@ import json
 
 # Data to serve with our API
 domains = {
-    1: {
-        'domain': 'fi.uba.ar',
-        'ip':'157.92.49.38',
-        'custom':'​False',
-    },
+    #'fi.uba.ar': DomainInfo(['157.92.49.38'], False),
 }
+
+class DomainInfo:
+
+    def __init__(self, ip_array, custom):
+        self.ip_list = cycle(ip_array)
+        self.custom = custom
+
+    def change_ips(self, ip_array, custom):
+        self.ip_list = cycle(ip_array)
+        self.custom = custom
+
+    def get_ip(self):
+        return next(self.ip_list)
+
+    def is_custom(self):
+        return self.custom
 
 def obtain_ip(domain_name):
 
@@ -82,18 +94,11 @@ def delete_domain(domain_name):
 
 from itertools import cycle
 
-class DomainInfo:
+def get_domains(domain_name = ''):
+    print('Domain name buscado: ' + domain_name)
+    print('Longitud:' + str(len(domain_name)))
+    # Filter dictionary by keeping elements whose names contain domain_name
+    items = [{"domain":k, "ip": v.get_ip(), "custom": v.is_custom()} for k, v in domains.items() if domain_name in k and v.is_custom()]
+    
+    return make_response({"items":items}, 200)
 
-    def __init__(self, ip_array, custom):
-        self.ip_list = cycle(ip_array)
-        self.custom = custom
-
-    def change_ips(self, ip_array, custom):
-        self.ip_list = cycle(ip_array)
-        self.custom = custom
-
-    def get_ip(self):
-        return next(self.ip_list)
-
-    def is_custom(self):
-        return self.custom
