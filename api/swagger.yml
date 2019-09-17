@@ -49,28 +49,7 @@ paths:
           description: "No existe el dominio en el sistema ni se pudo resolver mediante DNS"
 
   /custom-domains:
-    get:
-      operationId: "api.domains.get_domains"
-      tags:
-        - "Custom domains"
-      summary: "Obtiene los custom domains del sistema"
-      description: "Obtiene los custom domains del sistema que contienen 'domain_name'"
-      parameters:
-        - in: path
-          name: domain_name
-          required: false
-          schema:
-            type: string
-          description: parte del nombre del dominio que se quiere buscar
-      responses:
-        200:
-          description: "Dominios que cumplen con la condicion de busqueda"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Domain'
+
     post:
       operationId: "api.domains.add_custom_domain"
       tags:
@@ -120,7 +99,28 @@ paths:
         400:
           description: "El request body esta mal formadoWWWWW"
   /custom-domains/{domain_name}:
-
+    get:
+      operationId: "api.domains.get_domains"
+      tags:
+        - "Custom domains"
+      summary: "Obtiene los custom domains del sistema"
+      description: "Obtiene los custom domains del sistema que contienen 'domain_name'"
+      parameters:
+        - in: path
+          name: domain_name
+          required: false
+          schema:
+            type: string
+          description: parte del nombre del dominio que se quiere buscar
+      responses:
+        200:
+          description: "Dominios que cumplen con la condicion de busqueda"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Domain'
 
     delete:
       operationId: "api.domains.delete_domain"

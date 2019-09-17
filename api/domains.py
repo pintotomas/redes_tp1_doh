@@ -58,7 +58,7 @@ def add_custom_domain(**kwargs):
     domain = domain_info.get('domain')
     ip = domain_info.get('ip')
 
-    if domain in domains:
+    if domain in domains and domains[domain].is_custom():
         response = {"error": "custom domain already exists"}
         return make_response(json.dumps(response), 400)
 
@@ -94,9 +94,8 @@ def delete_domain(domain_name):
 
 from itertools import cycle
 
-def get_domains(domain_name = ''):
-    print('Domain name buscado: ' + domain_name)
-    print('Longitud:' + str(len(domain_name)))
+def get_domains(**kwargs):
+    domain_name = '' if kwargs['domain_name'] == "{domain_name}" else kwargs['domain_name']
     # Filter dictionary by keeping elements whose names contain domain_name
     items = [{"domain":k, "ip": v.get_ip(), "custom": v.is_custom()} for k, v in domains.items() if domain_name in k and v.is_custom()]
     
