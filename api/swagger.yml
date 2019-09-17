@@ -39,7 +39,7 @@ paths:
           description: El domain name del cual queremos obtener su ip
       responses:
         200:
-          description: "Dominio encontrado exitosamente"
+          description: "Informacion del dominio encontrado exitosamente"
           content:
             application/json:
               schema:
@@ -47,8 +47,32 @@ paths:
                   $ref: '#/components/schemas/Domain'
         404:
           description: "No existe el dominio en el sistema ni se pudo resolver mediante DNS"
+        504:
+          description: "Timeout al tratar de conseguir las IPs del dominio"
 
   /custom-domains:
+    get:
+      operationId: "api.domains.get_domains"
+      tags:
+        - "Custom domains"
+      summary: "Obtiene los custom domains del sistema"
+      description: "Obtiene los custom domains del sistema que contienen 'domain_name'"
+      parameters:
+        - in: query
+          name: domain_name
+          required: false
+          schema:
+            type: string
+          description: parte del nombre del dominio que se quiere buscar
+      responses:
+        200:
+          description: "Dominios que cumplen con la condicion de busqueda"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Domain'
 
     post:
       operationId: "api.domains.add_custom_domain"
@@ -72,7 +96,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Domain'
         400: 
-          description: "Ya se ha cargado el dominio en el sistema"
+          description: "Ya se ha cargado el dominio en el sistema o el JSON esta mal formado"
     put:
       operationId: "api.domains.edit_domain"
       tags: 
@@ -97,30 +121,8 @@ paths:
         404:
           description: "No existe el dominio en el sistema, no se puede modificar"
         400:
-          description: "El request body esta mal formadoWWWWW"
+          description: "El request body esta mal formado"
   /custom-domains/{domain_name}:
-    get:
-      operationId: "api.domains.get_domains"
-      tags:
-        - "Custom domains"
-      summary: "Obtiene los custom domains del sistema"
-      description: "Obtiene los custom domains del sistema que contienen 'domain_name'"
-      parameters:
-        - in: path
-          name: domain_name
-          required: false
-          schema:
-            type: string
-          description: parte del nombre del dominio que se quiere buscar
-      responses:
-        200:
-          description: "Dominios que cumplen con la condicion de busqueda"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Domain'
 
     delete:
       operationId: "api.domains.delete_domain"
@@ -195,7 +197,7 @@ paths:
       parameters:
         - in: path
           name: id_alumno
-          required: true
+          required: false
           schema:
             type: integer
           description: El id del usuario a obtener
