@@ -7,7 +7,7 @@ domains = {
     #'fi.uba.ar': DomainInfo(['157.92.49.38'], False),
 }
 
-
+# Lista circular donde guardo las IPs 
 # Autor: https://github.com/vprusso/youtube_tutorials/blob/master/data_structures/linked_list/circular_linked_list/circular_linked_list_insert.py
 # Cambios: Agregue un método get_next a la lista circular.
 
@@ -101,6 +101,9 @@ class CircularLinkedList (object):
     while this_node.get_next() != self.root:
       this_node = this_node.get_next()
       print (this_node.to_string())
+
+
+# Clase donde guardo la informacion de los dominios (ips y  si es custom)
 
 class DomainInfo:
 
